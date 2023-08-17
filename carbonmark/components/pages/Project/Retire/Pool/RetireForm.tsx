@@ -379,6 +379,3 @@ export const RetireForm: FC<Props> = (props) => {
     </FormProvider>
   );
 };
-function getApprovalValue(totalPrice: string, paymentMethod: string): string {
-  throw new Error("Function not implemented.");
-}
