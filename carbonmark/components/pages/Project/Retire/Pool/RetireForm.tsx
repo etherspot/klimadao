@@ -1,11 +1,10 @@
 import { PoolToken } from "@klimadao/lib/constants";
-import { formatUnits, safeAdd, useWeb3 } from "@klimadao/lib/utils";
+import { useWeb3 } from "@klimadao/lib/utils";
 import { t } from "@lingui/macro";
 import { Card } from "components/Card";
+import { ProjectHeader } from "components/pages/Project/ProjectHeader";
 import { Text } from "components/Text";
 import { Col, TwoColLayout } from "components/TwoColLayout";
-import { ProjectHeader } from "components/pages/Project/ProjectHeader";
-import { utils } from "ethers";
 import { approveTokenSpend, getUSDCBalance } from "lib/actions";
 import {
   getRetirementAllowance,
@@ -14,7 +13,7 @@ import {
 import { urls } from "lib/constants";
 import { redirectFiatCheckout } from "lib/fiat/fiatCheckout";
 import { getFiatInfo } from "lib/fiat/fiatInfo";
-import { getTokenDecimals } from "lib/networkAware/getTokenDecimals";
+import { getPoolApprovalValue } from "lib/getPoolData";
 import { TransactionStatusMessage, TxnStatus } from "lib/statusMessage";
 import { Price as PriceType, Project } from "lib/types/carbonmark";
 import { waitForIndexStatus } from "lib/waitForIndexStatus";
@@ -26,10 +25,10 @@ import { CreditCardModal } from "./CreditCardModal";
 import { Price } from "./Price";
 import { RetireInputs } from "./RetireInputs";
 import { RetireModal } from "./RetireModal";
+import * as styles from "./styles";
 import { SubmitButton } from "./SubmitButton";
 import { SuccessScreen } from "./SuccessScreen";
 import { TotalValues } from "./TotalValues";
-import * as styles from "./styles";
 import { FormValues } from "./types";
 
 export interface Props {
@@ -195,21 +194,8 @@ export const RetireForm: FC<Props> = (props) => {
     }
   };
 
-  const getApprovalValue = (): string => {
-    if (!inputValues?.totalPrice) return "0";
-
-    const onePercent = utils
-      .parseUnits(
-        inputValues.totalPrice,
-        getTokenDecimals(inputValues.paymentMethod)
-      )
-      .div("100");
-    const val = safeAdd(
-      inputValues.totalPrice,
-      formatUnits(onePercent, getTokenDecimals(inputValues.paymentMethod))
-    );
-    return val;
-  };
+  const getApprovalValue = () =>
+    getPoolApprovalValue(inputValues?.totalPrice!, inputValues?.paymentMethod!);
 
   // compare with total price including fees
   const hasApproval = () => {
@@ -393,3 +379,6 @@ export const RetireForm: FC<Props> = (props) => {
     </FormProvider>
   );
 };
+function getApprovalValue(totalPrice: string, paymentMethod: string): string {
+  throw new Error("Function not implemented.");
+}

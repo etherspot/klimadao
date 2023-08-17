@@ -1,14 +1,15 @@
 import { useWeb3 } from "@klimadao/lib/utils";
 import { t } from "@lingui/macro";
 import { Card } from "components/Card";
+import { ProjectHeader } from "components/pages/Project/ProjectHeader";
 import { Text } from "components/Text";
 import { Col, TwoColLayout } from "components/TwoColLayout";
-import { ProjectHeader } from "components/pages/Project/ProjectHeader";
 import { approveTokenSpend, getUSDCBalance } from "lib/actions";
 import {
   getRedeemAllowance,
   redeemCarbonTransaction,
 } from "lib/actions.redeem";
+import { getPoolApprovalValue } from "lib/getPoolData";
 import { TransactionStatusMessage, TxnStatus } from "lib/statusMessage";
 import { Price as PriceType, Project } from "lib/types/carbonmark";
 import { FC, useEffect, useState } from "react";
@@ -104,6 +105,9 @@ export const PurchaseForm: FC<Props> = (props) => {
     }
   };
 
+  const getApprovalValue = () =>
+    getPoolApprovalValue(inputValues?.totalPrice!, inputValues?.paymentMethod!);
+
   // compare with total price including fees
   const hasApproval = () => {
     return (
@@ -122,7 +126,7 @@ export const PurchaseForm: FC<Props> = (props) => {
           tokenName: inputValues.paymentMethod,
           spender: "retirementAggregatorV2",
           signer: provider.getSigner(),
-          value: inputValues.totalPrice,
+          value: getApprovalValue(),
           onStatus: onUpdateStatus,
         }));
     } catch (e) {
@@ -201,6 +205,13 @@ export const PurchaseForm: FC<Props> = (props) => {
         hasApproval={hasApproval()}
         amount={{
           value: inputValues?.totalPrice || "0",
+          token:
+            (inputValues?.paymentMethod !== "fiat" &&
+              inputValues?.paymentMethod) ||
+            "usdc",
+        }}
+        approvalValue={{
+          value: getApprovalValue(),
           token:
             (inputValues?.paymentMethod !== "fiat" &&
               inputValues?.paymentMethod) ||

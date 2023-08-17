@@ -7,6 +7,7 @@ import { getConsumptionCost } from "lib/actions.retire";
 import { CARBONMARK_FEE, urls } from "lib/constants";
 import { formatToPrice, formatToTonnes } from "lib/formatNumbers";
 import { carbonmarkPaymentMethodMap } from "lib/getPaymentMethods";
+import { getPoolApprovalValue } from "lib/getPoolData";
 import { Price } from "lib/types/carbonmark";
 import Image from "next/legacy/image";
 import { useRouter } from "next/router";
@@ -51,6 +52,8 @@ export const TotalValues: FC<TotalValuesProps> = (props) => {
     if (fee <= 0) return "$0.00";
     return formatToPrice(fee.toString(), locale, isFiat);
   };
+
+  const getApprovalValue = () => getPoolApprovalValue(costs, "usdc", 6);
 
   useEffect(() => {
     const newCosts = async () => {
@@ -119,13 +122,12 @@ export const TotalValues: FC<TotalValuesProps> = (props) => {
   const exceededBalance =
     !!props.userBalance &&
     !isFiat &&
-    Number(props.userBalance) <= Number(costs);
+    Number(props.userBalance) <= Number(getApprovalValue());
   const currentBalance = formatToPrice(props.userBalance || "0", locale);
   const fiatBalance = formatToPrice(props.fiatBalance || "0", locale);
 
   const formattedCosts =
-    (isFiat && formatToPrice(costs, locale)) ||
-    Number(costs)?.toLocaleString(locale);
+    (isFiat && formatToPrice(costs, locale)) || getApprovalValue();
 
   return (
     <>
