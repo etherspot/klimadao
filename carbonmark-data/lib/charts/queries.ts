@@ -9,6 +9,9 @@ import {
   PaginationQueryParams,
   Prices,
   PricesItem,
+  Token,
+  TokenInfo,
+  TokensInfo,
 } from "./types";
 
 /* Queries the Data API
@@ -51,7 +54,7 @@ async function paginatedQuery<RI, Q>(
   return query(url, params, revalidate);
 }
 
-// Queries the Credits Daily Aggregations endpoint
+/** Queries the Credits Daily Aggregations endpoint */
 export const queryDailyAggregatedCredits = function (
   params: CreditsQueryParams & AggregationQueryParams & PaginationQueryParams
 ): Promise<DailyCredits> {
@@ -61,7 +64,7 @@ export const queryDailyAggregatedCredits = function (
   >(urls.api.dailyAggregatedCredits, params);
 };
 
-// Queries the Credits Global Aggregations endpoint
+/** Queries the Credits Global Aggregations endpoint */
 export const queryAggregatedCredits = function (
   params: CreditsQueryParams & AggregationQueryParams
 ): Promise<AggregatedCredits> {
@@ -71,9 +74,22 @@ export const queryAggregatedCredits = function (
   );
 };
 
-// Queries the Prices endpoint
+/** Queries the Prices endpoint */
 export const queryPrices = function (
   params: PaginationQueryParams
 ): Promise<Prices> {
   return paginatedQuery<PricesItem, typeof params>(urls.api.prices, params);
+};
+
+/** Queries the Tokens endpoint */
+export const queryTokensInfo = function (): Promise<TokensInfo> {
+  return paginatedQuery<TokenInfo, undefined>(urls.api.tokens);
+};
+/** Queries the Tokens endpoint and return info for a particular token */
+export const queryTokenInfo = async function (
+  token: Token
+): Promise<TokenInfo | undefined> {
+  const tokens = (await paginatedQuery<TokenInfo, undefined>(urls.api.tokens))
+    .items;
+  return tokens.find((tokenInfo) => tokenInfo.name.toLowerCase() == token);
 };
