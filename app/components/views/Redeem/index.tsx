@@ -207,7 +207,7 @@ export const Redeem = (props: Props) => {
           paymentMethod,
           quantity,
           tempSymbol: pool === "bct" || pool === "nct" ? "TCO2" : "C3T", // temp workaround, don't have the full symbol
-          cost: getApprovalValue(),
+          cost,
         })
       );
       handleOnSuccess();
