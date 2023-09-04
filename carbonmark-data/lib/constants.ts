@@ -38,5 +38,6 @@ export const urls = {
     aggregatedCredits: `${api_url}/credits/agg`,
     prices: `${api_url}/prices`,
     tokens: `${api_url}/tokens`,
+    klimaMonthlyRetirementsByPool: `${api_url}/retirements/klima/agg/tokens/monthly`,
   },
 };

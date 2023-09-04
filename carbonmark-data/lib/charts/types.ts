@@ -79,6 +79,14 @@ export interface TokenInfo {
 }
 export type TokensInfo = PaginatedResponse<TokenInfo>;
 
+export interface KlimaMonthlyRetirementsByPoolItem {
+  retirement_date: string;
+  token: string;
+  amount_retired: number;
+  number_of_retirements: number;
+}
+export type KlimaMonthlyRetirementsByPool = PaginatedResponse<KlimaMonthlyRetirementsByPoolItem>;
+
 // ChartData mappings (used to transform API responses into chart data)
 export interface ChartMappingParams {
   source: string; // Qhen querying source field is renamed into destination
