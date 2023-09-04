@@ -2,8 +2,6 @@
   box-sizing: border-box;
   box-shadow: var(--box-shadow);
   border-radius: 8px;
-  min-height: 284px;
-  height: 284px;
   background-color: var(--surface-04);
   padding: 12px;
   display: flex;
@@ -12,6 +10,10 @@
   position: relative;
   width: 100%;
   min-width: 0;
+}
+.rowCardContainer {
+  min-height: 284px;
+  height: 284px;
 }
 
 .cardHeader {
