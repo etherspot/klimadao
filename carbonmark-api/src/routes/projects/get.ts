@@ -15,6 +15,7 @@ import {
   getOffsetTokenPrices,
 } from "./projects.utils";
 
+import { ProjectType } from "src/plugins/open-api";
 import { fetchAllCarbonProjects } from "../../utils/helpers/carbonProjects.utils";
 import { isMatchingCmsProject } from "../../utils/helpers/utils";
 
@@ -46,21 +47,21 @@ const schema = {
     },
   },
   response: {
-    "2xx": {
+    "200": {
       description: "Successful response",
-      type: "object",
-      properties: {
-        id: { type: "string" },
-        key: { type: "string" },
-        projectID: { type: "string" },
-        name: { type: "string" },
-        methodology: { type: "string" },
-        vintage: { type: "string" },
-        projectAddress: { type: "string" },
-        registry: { type: "string" },
-        country: { type: "string" },
-        category: { type: "string" },
-        price: { type: "string" },
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              result: ProjectType,
+              status: {
+                type: "number",
+                description: "HTTP status code.",
+              },
+            },
+          },
+        },
       },
     },
   },
