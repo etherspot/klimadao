@@ -3,6 +3,7 @@ import { t, Trans } from "@lingui/macro";
 import { ButtonPrimary } from "components/Buttons/ButtonPrimary";
 import { Spinner } from "components/shared/Spinner";
 import { CarbonmarkPaymentMethod } from "lib/types/carbonmark";
+import { isUndefined } from "lodash";
 import { FC } from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import * as styles from "./styles";
@@ -47,7 +48,7 @@ export const SubmitButton: FC<Props> = (props) => {
         )
       }
       onClick={handleSubmit(onSubmit)}
-      disabled={props.disabled}
+      disabled={props.disabled || isUndefined(props.paymentMethod)}
     />
   );
 };

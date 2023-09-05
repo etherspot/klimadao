@@ -15,6 +15,7 @@ import {
   CarbonmarkPaymentMethod,
   Price as PriceType,
 } from "lib/types/carbonmark";
+import { isUndefined } from "lodash";
 import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 import { FC, useEffect } from "react";
@@ -153,7 +154,9 @@ export const RetireInputs: FC<Props> = (props) => {
               inputProps={{
                 placeholder: t`Tonnes`,
                 type: "number",
-                min: getValidations().quantity.min.value,
+                min: isUndefined(paymentMethod)
+                  ? 0
+                  : getValidations().quantity.min.value,
                 max: Number(props.price.supply),
                 ...register("quantity", {
                   onChange: (e) => {
@@ -169,7 +172,9 @@ export const RetireInputs: FC<Props> = (props) => {
                     value: true,
                     message: t`Quantity is required`,
                   },
-                  min: getValidations().quantity.min,
+                  min: isUndefined(paymentMethod)
+                    ? 0
+                    : getValidations().quantity.min,
                   max: {
                     value: Number(props.price.supply),
                     message: t`Available supply exceeded`,

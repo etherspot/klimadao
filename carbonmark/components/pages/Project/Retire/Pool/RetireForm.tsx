@@ -63,7 +63,6 @@ export const RetireForm: FC<Props> = (props) => {
     mode: "onChange",
     defaultValues: {
       projectTokenAddress: props.price.projectTokenAddress,
-      paymentMethod: "fiat",
       ...inputValues,
     },
   });
