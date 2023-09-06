@@ -1,4 +1,4 @@
-import { utils } from "ethers";
+import { formatUnits } from "ethers-v6";
 import { assign } from "lodash";
 import { Activity } from "src/.generated/types/marketplace.types";
 
@@ -11,7 +11,7 @@ import { Activity } from "src/.generated/types/marketplace.types";
  */
 export const formatActivity = (activity: Activity): Activity => {
   const format = (value: string | undefined | null, decimals: number) =>
-    value ? utils.formatUnits(value, decimals) : null;
+    value ? formatUnits(value, decimals) : null;
   return assign(activity, {
     amount: format(activity.amount, 18),
     previousAmount: format(activity.previousAmount, 18),
